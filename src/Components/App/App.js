@@ -15,19 +15,19 @@ class App extends React.Component {
         name: "CustName1",
         artist: "CustArtist1",
         album: "custAlbum1",
-        id: 1
+        id: 11
       },
       {
         name: "CustName2",
         artist: "CustArtist2",
         album: "CustAlbum2",
-        id: 2
+        id: 12
       },
       {
         name: "CustName3",
         artist: "CustArtist3",
         album: "CustAlbum3",
-        id: 3
+        id: 13
       }],
       searchResults: [{
         name: "name1",
@@ -48,6 +48,16 @@ class App extends React.Component {
         id: 3
       }]
     };
+    this.addTrack = this.addTrack.bind(this);
+  }
+
+  addTrack(track) {
+    let currentList = this.state.playlistTracks;
+    if(currentList.find(item=>item.id === track.id)){
+      return;
+    }
+    currentList.push(track);
+    this.setState({playlistTracks: currentList});
   }
 
   render() {
@@ -57,7 +67,7 @@ class App extends React.Component {
         <div className="App">
           <SearchBar />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults} />
+            <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
             <Playlist playlistTracks={this.state.playlistTracks} playlistName={this.state.playlistName} />
           </div>
         </div>
