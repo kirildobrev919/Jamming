@@ -76,6 +76,7 @@ class App extends React.Component {
   }
 
   savePlaylist() {
+    alert("The method is linked to the button correctly!");
     let trackURIs = this.state.playlistTracks.map(item => item.uri);
   }
 
