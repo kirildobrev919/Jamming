@@ -3,6 +3,7 @@ import './App.css';
 import {SearchBar} from './../SearchBar/SearchBar'
 import {SearchResults} from './../SearchResults/SearchResults';
 import {Playlist} from './../PlayList/Playlist';
+import Spotify from '../../util/Spotify';
 
 
 class App extends React.Component {
@@ -11,42 +12,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       playlistName: "My Custom playlist",
-      playlistTracks: [{
-        name: "CustName1",
-        artist: "CustArtist1",
-        album: "custAlbum1",
-        id: 11
-      },
-      {
-        name: "CustName2",
-        artist: "CustArtist2",
-        album: "CustAlbum2",
-        id: 12
-      },
-      {
-        name: "CustName3",
-        artist: "CustArtist3",
-        album: "CustAlbum3",
-        id: 13
-      }],
-      searchResults: [{
-        name: "name1",
-        artist: "artist1",
-        album: "album1",
-        id: 1
-      },
-      {
-        name: "name2",
-        artist: "artist2",
-        album: "album2",
-        id: 2
-      },
-      {
-        name: "name3",
-        artist: "artist3",
-        album: "album3",
-        id: 3
-      }]
+      playlistTracks: [],
+      searchResults: []
     };
 
     this.addTrack = this.addTrack.bind(this);
@@ -76,12 +43,21 @@ class App extends React.Component {
   }
 
   savePlaylist() {
-    alert("The method is linked to the button correctly!");
     let trackURIs = this.state.playlistTracks.map(item => item.uri);
+    
+    //call save playlist from spotify module
+    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
+      this.setState({
+        playlistName: 'New Playlist',
+        playlistTracks: []
+      })
+    })
   }
 
   search(term) {
-    console.log(term);
+    Spotify.search(term).then(searchResults => {
+      this.setState( {searchResults: searchResults})
+    })
   }
 
   render() {
