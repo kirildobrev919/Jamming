@@ -11,7 +11,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      playlistName: "My Custom playlist",
+      playlistName: 'My Custom playlist',
       playlistTracks: [],
       searchResults: []
     };
@@ -44,14 +44,24 @@ class App extends React.Component {
 
   savePlaylist() {
     let trackURIs = this.state.playlistTracks.map(item => item.uri);
-    
+    debugger;
     //call save playlist from spotify module
-    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
+    try{
+      Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
+        debugger;
+        this.setState({
+          playlistName: 'New Playlist',
+          playlistTracks: []
+        })
+      })
+    }catch(err){
+      console.log('In App, method savePlaylist - .then cannot proceed when savePlaylist returns error!');
+      alert('Please add records to your playlist!');
       this.setState({
         playlistName: 'New Playlist',
         playlistTracks: []
       })
-    })
+    }
   }
 
   search(term) {
