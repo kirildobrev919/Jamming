@@ -4,7 +4,7 @@ import { TrackList } from './../TrackList/TrackList';
 
 export class Playlist extends React.Component {
     constructor(props) {
-        super(props);
+        super();
 
         this.handleNameChange = this.handleNameChange.bind(this);
     }

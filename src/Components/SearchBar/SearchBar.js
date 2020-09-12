@@ -4,7 +4,7 @@ import './SearchBar.css';
 export class SearchBar extends React.Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.state = {
             term: "Enter A Song, Album, or Artist"
         }
@@ -18,7 +18,7 @@ export class SearchBar extends React.Component {
     }
 
     handleTermChange(event) {
-        this.setState({term: event.target.value});
+        this.setState({ term: event.target.value });
     }
 
     render() {
