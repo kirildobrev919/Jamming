@@ -3,6 +3,7 @@ import './App.css';
 import { SearchBar } from './../SearchBar/SearchBar'
 import { SearchResults } from './../SearchResults/SearchResults';
 import { Playlist } from './../PlayList/Playlist';
+import { PlaylistList } from './../PlaylistList/PlaylistList';
 import Spotify from '../../util/Spotify';
 
 
@@ -83,6 +84,7 @@ class App extends React.Component {
               onRemove={this.removeTrack}
               onNameChange={this.updatePlaylistName}
               onSave={this.savePlaylist} />
+            <PlaylistList />
           </div>
         </div>
       </div>

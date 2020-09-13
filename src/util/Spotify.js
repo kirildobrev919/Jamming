@@ -1,24 +1,11 @@
 let accessToken;
 //let url = 'https://example.com/callback#access_token=NwAExz...BV3O2Tk&token_type=Bearer&expires_in=3600&state=123';
 const authorizeUrl = 'https://accounts.spotify.com/authorize';
-const clientID = 'a849532c1e1c491ea7d6f67d64e2bf90';
+const clientID = '';
 const redirectURI = 'http://localhost:3000/';
-var userId = ''; //i will need var instead const
+let userId; //i will need var instead const
 
 const Spotify = {
-
-    getCurrentUserId() {
-
-        const accessToken = Spotify.getAccessToken();
-        const headers = { Authorization: `Bearer ${accessToken}` };
-
-        //get the current user ID
-        return fetch('https://api.spotify.com/v1/me', { headers: headers }
-        ).then(response => response.json()
-        ).then(jsonResponse => {
-            userId = jsonResponse.id;
-        })
-    },
 
     getAccessToken() {
 
@@ -44,6 +31,18 @@ const Spotify = {
         }
     },
 
+    async getCurrentUserId() {
+
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+
+        //get the current user ID
+        const response = await fetch('https://api.spotify.com/v1/me', { headers: headers }
+        );
+        const jsonResponse = await response.json();
+        userId = jsonResponse.id;
+    },
+
     search(term) {
 
         const accessToken = Spotify.getAccessToken();
@@ -64,6 +63,35 @@ const Spotify = {
                 artist: track.artists[0].name,
                 album: track.album.name,
                 uri: track.uri
+            }));
+        })
+    },
+
+    getUserPlaylists() {
+
+        //const theCors = 'https://cors-anywhere.herokuapp.com/'; when usitn userId
+        if (!accessToken) {
+            accessToken = this.getAccessToken();
+        }
+
+        if (!userId) {
+            userId = this.getCurrentUserId();
+        }
+
+        return fetch(`https://api.spotify.com/v1/me/playlists`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(response => response.json()
+        ).then(jsonResponse => {
+            debugger;
+            if (!jsonResponse.items) {
+                return [];
+            }
+
+            return jsonResponse.items.map(list => ({
+                id: list.id,
+                name: list.name,
             }));
         })
     },
@@ -96,15 +124,6 @@ const Spotify = {
                         body: JSON.stringify({ uris: trackUris })
                     })
             })
-    },
-
-    getUserPlaylists() {
-
-        if (!userId) {
-            userId = this.getCurrentUserId();
-        }
-
-        return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`)
     }
 }
 
