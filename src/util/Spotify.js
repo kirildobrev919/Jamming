@@ -127,34 +127,47 @@ const Spotify = {
         })
     },
 
-    savePlaylist(name, trackUris) {
+    savePlaylist(name, trackUris, plId) {
 
         if (!name || !trackUris.length) {
             return;
         }
-
         if (!userId) {
             userId = this.getCurrentUserId();
         }
+        if (!accessToken) {
+            accessToken = this.getAccessToken();
+        }
 
-        const accessToken = Spotify.getAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
 
-        return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`,
-            {
-                headers: headers,
-                method: 'POST',
-                body: JSON.stringify({ name: name })
-            }).then(response => response.json()
-            ).then(jsonResponse => {
-                const playlistId = jsonResponse.id;
-                return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
-                    {
-                        headers: headers,
-                        method: 'POST',
-                        body: JSON.stringify({ uris: trackUris })
-                    })
-            })
+        debugger;
+        if (!plId) {
+            return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`,
+                {
+                    headers: headers,
+                    method: 'POST',
+                    body: JSON.stringify({ name: name })
+                }).then(response => response.json()
+                ).then(jsonResponse => {
+                    const playlistId = jsonResponse.id;
+                    return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
+                        {
+                            headers: headers,
+                            method: 'POST',
+                            body: JSON.stringify({ uris: trackUris })
+                        }
+                    )
+                })
+        } else {
+            return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${plId}/tracks`,
+                {
+                    headers: headers,
+                    method: 'PUT',
+                    body: JSON.stringify({ uris: trackUris })
+                }
+            )
+        }
     }
 }
 

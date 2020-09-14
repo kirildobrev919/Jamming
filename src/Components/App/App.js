@@ -13,6 +13,7 @@ class App extends React.Component {
     super();
     this.state = {
       playlistName: 'My Custom playlist',
+      playlistId: null,
       playlistTracks: [],
       searchResults: []
     };
@@ -40,11 +41,12 @@ class App extends React.Component {
     this.setState({ playlistTracks: currentList });
   }
 
-  getPlaylistId(playlistId, playlistName) {
+  getPlaylistId(plId, playlistName) {
 
     //fetching the tracks and the name of selected playlist and setting state
-    Spotify.getPlaylist(playlistId).then(tracksResult => {
+    Spotify.getPlaylist(plId).then(tracksResult => {
       this.setState({
+        playlistId: plId,
         playlistName: playlistName,
         playlistTracks: tracksResult
       })
@@ -61,7 +63,8 @@ class App extends React.Component {
     //call save playlist from spotify module
     //so far saves only as new playlists. Not updating
     try {
-      Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
+      debugger;
+      Spotify.savePlaylist(this.state.playlistName, trackURIs, this.state.playlistId).then(() => {
         debugger;
         this.setState({
           playlistName: 'New Playlist',
