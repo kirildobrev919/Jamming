@@ -1,7 +1,7 @@
 let accessToken;
 //let url = 'https://example.com/callback#access_token=NwAExz...BV3O2Tk&token_type=Bearer&expires_in=3600&state=123';
 const authorizeUrl = 'https://accounts.spotify.com/authorize';
-const clientID = '';
+const clientID = 'a849532c1e1c491ea7d6f67d64e2bf90';
 const redirectURI = 'http://localhost:3000/';
 let userId; //i will need var instead const
 
@@ -84,7 +84,6 @@ const Spotify = {
             }
         }).then(response => response.json()
         ).then(jsonResponse => {
-            debugger;
             if (!jsonResponse.items) {
                 return [];
             }
@@ -93,6 +92,38 @@ const Spotify = {
                 id: list.id,
                 name: list.name,
             }));
+        })
+    },
+
+    getPlaylist(playlistId) {
+
+        if (!accessToken) {
+            accessToken = this.getAccessToken();
+        }
+
+        if (!userId) {
+            userId = this.getCurrentUserId();
+        }
+
+        //will return the tracks from selected playlist by playlist id
+        return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(response => response.json()
+        ).then(jsonResponse => {
+            debugger;
+            if (!jsonResponse.items) {
+                return [];
+            }
+
+            return jsonResponse.items.map(item => ({
+                id: item.track.id,
+                name: item.track.name,
+                artist: item.track.artists[0].name,
+                album: item.track.album.name,
+                uri: item.track.uri
+            }))
         })
     },
 

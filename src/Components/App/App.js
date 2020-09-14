@@ -22,6 +22,7 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.getPlaylistId = this.getPlaylistId.bind(this);
   }
 
   addTrack(track) {
@@ -39,14 +40,26 @@ class App extends React.Component {
     this.setState({ playlistTracks: currentList });
   }
 
+  getPlaylistId(playlistId, playlistName) {
+
+    //fetching the tracks and the name of selected playlist and setting state
+    Spotify.getPlaylist(playlistId).then(tracksResult => {
+      this.setState({
+        playlistName: playlistName,
+        playlistTracks: tracksResult
+      })
+    })
+  }
+
   updatePlaylistName(name) {
     this.setState({ playlistName: name });
   }
 
   savePlaylist() {
     let trackURIs = this.state.playlistTracks.map(item => item.uri);
-    debugger;
+
     //call save playlist from spotify module
+    //so far saves only as new playlists. Not updating
     try {
       Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
         debugger;
@@ -84,7 +97,9 @@ class App extends React.Component {
               onRemove={this.removeTrack}
               onNameChange={this.updatePlaylistName}
               onSave={this.savePlaylist} />
-            <PlaylistList />
+          </div>
+          <div className="App-playlist">
+            <PlaylistList selectPlaylist={this.getPlaylistId} />
           </div>
         </div>
       </div>
