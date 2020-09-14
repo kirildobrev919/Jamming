@@ -1,7 +1,7 @@
 let accessToken;
 //let url = 'https://example.com/callback#access_token=NwAExz...BV3O2Tk&token_type=Bearer&expires_in=3600&state=123';
 const authorizeUrl = 'https://accounts.spotify.com/authorize';
-const clientID = 'a849532c1e1c491ea7d6f67d64e2bf90';
+const clientID = '';
 const redirectURI = 'http://localhost:3000/';
 let userId; //i will need var instead const
 
