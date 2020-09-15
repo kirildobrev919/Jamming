@@ -10,7 +10,6 @@ export class PlaylistListItem extends React.Component {
     }
 
     getPlaylistId(e) {
-        debugger;
         this.props.selectPlaylist(this.props.itemKey, this.props.name);
     }
 

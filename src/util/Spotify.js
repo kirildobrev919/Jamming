@@ -1,9 +1,9 @@
-let accessToken;
 //let url = 'https://example.com/callback#access_token=NwAExz...BV3O2Tk&token_type=Bearer&expires_in=3600&state=123';
+let accessToken;
 const authorizeUrl = 'https://accounts.spotify.com/authorize';
 const clientID = '';
 const redirectURI = 'http://localhost:3000/';
-let userId; //i will need var instead const
+let userId;
 
 const Spotify = {
 
@@ -112,7 +112,6 @@ const Spotify = {
             }
         }).then(response => response.json()
         ).then(jsonResponse => {
-            debugger;
             if (!jsonResponse.items) {
                 return [];
             }
@@ -141,7 +140,6 @@ const Spotify = {
 
         const headers = { Authorization: `Bearer ${accessToken}` };
 
-        debugger;
         if (!plId) {
             return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`,
                 {
@@ -166,7 +164,14 @@ const Spotify = {
                     method: 'PUT',
                     body: JSON.stringify({ uris: trackUris })
                 }
-            )
+            ).then(response => response.json()
+            ).then(jsonResponse => {
+                return fetch(`https://api.spotify.com/v1/playlists/${plId}`, {
+                    headers: headers,
+                    method: 'PUT',
+                    body: JSON.stringify({ name: name })
+                })
+            })
         }
     }
 }
