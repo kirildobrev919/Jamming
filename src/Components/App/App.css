@@ -38,6 +38,13 @@ h2 {
   color: #fff;
 }
 
+.Welcome {
+  color: orange;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .App-playlist {
   display: flex;
   justify-content: space-between;

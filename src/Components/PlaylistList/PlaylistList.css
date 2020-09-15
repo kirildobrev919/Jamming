@@ -35,6 +35,13 @@
     color: #fff;
     font-weight: 500;
   }
+
+  .Hint {
+    color: orange;
+    text-decoration: underline;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
   
   .Playlist-save:hover {
     background-color: rgba(108, 65, 233, .7);

@@ -1,3 +1,4 @@
+//App folder is jamming
 import React from 'react';
 import './App.css';
 import { SearchBar } from './../SearchBar/SearchBar'
@@ -42,7 +43,6 @@ class App extends React.Component {
   }
 
   getPlaylistId(plId, playlistName) {
-
     //fetching the tracks and the name of selected playlist and setting state
     Spotify.getPlaylist(plId).then(tracksResult => {
       this.setState({
@@ -61,12 +61,10 @@ class App extends React.Component {
     let trackURIs = this.state.playlistTracks.map(item => item.uri);
 
     //call save playlist from spotify module
-    //so far saves only as new playlists. Not updating
     try {
-      debugger;
       Spotify.savePlaylist(this.state.playlistName, trackURIs, this.state.playlistId).then(() => {
-        debugger;
         this.setState({
+          playlistId: null,
           playlistName: 'New Playlist',
           playlistTracks: []
         })
@@ -75,6 +73,7 @@ class App extends React.Component {
       console.log('In App, method savePlaylist - .then cannot proceed when savePlaylist returns error!');
       alert('Please add records to your playlist!');
       this.setState({
+        playlistId: null,
         playlistName: 'New Playlist',
         playlistTracks: []
       })
@@ -90,8 +89,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Ja<span className="highlight">mmm</span>ing</h1>
+        <h1>Spot<span className="highlight">&nbsp;Playlists&nbsp;</span>Organizer</h1>
         <div className="App">
+          <h3 className='Welcome'>Hello, here you can create new playlists or alter existing ones in your Spotify account.</h3>
+          <h3 className='Welcome'>Welcome and have fun! :)</h3>
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />

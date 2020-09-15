@@ -25,6 +25,7 @@ export class PlaylistList extends React.Component {
         return (
             <div className="Playlist">
                 <h2>My Playlits</h2>
+                <p className='Hint'>Refresh the page to see changes in the names!</p>
                 {
                     this.state.playlists.map(item => {
                         return <PlaylistListItem
